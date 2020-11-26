@@ -25,5 +25,9 @@
     "ibm-watson": "^5.7.1",
     "log4js": "^6.3.0",
     "twitter-v2": "^1.0.0"
+  },
+  "engines": {
+    "node": "^12.x.x",
+    "npm": "^6.x.x"
   }
 }

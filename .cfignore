@@ -125,6 +125,3 @@ airlines.js
 manifest-params*.yaml
 tweets.zip
 guida_twitter.docx
-_*.sh
-_*.json
-
