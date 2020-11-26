@@ -1,0 +1,28 @@
+{
+  "name": "twitterv2-discovery",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node -r dotenv/config index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lotti/twitterv2-discovery.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lotti/twitterv2-discovery/issues"
+  },
+  "homepage": "https://github.com/Lotti/twitterv2-discovery#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "fs-extra": "^9.0.1",
+    "ibm-cos-sdk": "^1.8.0",
+    "ibm-watson": "^5.7.1",
+    "log4js": "^6.3.0",
+    "twitter-v2": "^0.2.0"
+  }
+}

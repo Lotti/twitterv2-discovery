@@ -1,0 +1,98 @@
+---
+defaultBaseImageVersion: latest
+properties: []
+stages:
+  - name: Build
+    inputs:
+      - url: ${REPO}
+        type: git
+        branch: ${BRANCH}
+        dir_name: null
+    triggers:
+      - type: git
+        events: '{"push":true,"pull_request":false,"pull_request_closed":false}'
+    permission:
+      execute: TOOLCHAIN_ADMINS
+    jobs:
+      - name: Build
+        type: builder
+        curatedDockerImage: default
+        artifact_dir: ''
+        build_type: shell
+        script: |-
+          #!/bin/bash
+
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.0/install.sh | bash
+
+          export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+          nvm install lts/fermium
+          nvm alias default lts/fermium
+
+          npm install --production
+  - name: Deploy
+    inputs:
+      - type: job
+        stage: Build
+        job: Build
+        dir_name: null
+    triggers:
+      - type: stage
+    permission:
+      execute: TOOLCHAIN_ADMINS
+    properties:
+      - name: REGION
+        type: text
+        value: eu-de
+      - name: STORAGE_MODE
+        type: text
+      - name: TWITTER_API_KEY
+        type: secure
+      - name: TWITTER_SECRET_KEY
+        type: secure
+      - name: COS_ENDPOINT
+        type: secure
+      - name: COS_API_KEY
+        type: secure
+      - name: COS_IBM_AUTH_ENDPOINT
+        value: https://iam.cloud.ibm.com/identity/token
+        type: text
+      - name: COS_SERVICE_INSTANCE_ID
+        type: secure
+      - name: COS_BUCKET_NAME
+        type: secure
+      - name: DISCOVERY_ENDPOINT
+        type: secure
+      - name: DISCOVERY_API_KEY
+        type: secure
+      - name: DISCOVERY_COLLECTION_ID
+        type: secure
+      - name: DISCOVERY_ENVIRONMENT_ID
+        type: secure
+    jobs:
+      - name: Deploy
+        type: deployer
+        curatedDockerImage: default
+        deploy_type: cf
+        target:
+          region_id: ${CF_REGION_ID}
+          organization: ${CF_ORGANIZATION}
+          space: ${CF_SPACE}
+          application: ${CF_APP}
+          api_key: ${API_KEY}
+        script: |-
+          #!/bin/bash
+
+          #PUT ENV VARS IN manifest-params.yaml
+          > manifest-params.yaml
+          OLD_IFS="${IFS}"
+          IFS=','
+          read -a envs <<< "${IDS_OUTPUT_PROPS}"
+          for i in "${envs[@]}"; do
+              echo "${i}: \"${!i}\"" >> manifest-params.yaml
+          done
+          IFS="${OLD_IFS}"
+
+          #PUSH APP
+          cf push "${CF_APP}" --var CF_APP="${CF_APP}" --vars-file ./manifest-params.yaml
