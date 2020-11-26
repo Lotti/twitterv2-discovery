@@ -42,11 +42,12 @@ stages:
     permission:
       execute: TOOLCHAIN_ADMINS
     properties:
-      - name: REGION
+      - name: CF_REGION
         type: text
-        value: eu-de
+        value: ${CF_REGION_ID}
       - name: STORAGE_MODE
         type: text
+        value: COS
       - name: TWITTER_API_KEY
         type: secure
       - name: TWITTER_SECRET_KEY
@@ -58,7 +59,7 @@ stages:
       - name: COS_IBM_AUTH_ENDPOINT
         value: https://iam.cloud.ibm.com/identity/token
         type: text
-      - name: COS_SERVICE_INSTANCE_ID
+      - name: COS_RESOURCE_INSTANCE_ID
         type: secure
       - name: COS_BUCKET_NAME
         type: secure

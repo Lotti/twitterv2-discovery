@@ -7,14 +7,14 @@ const {formatTweetToFile} = require('./helpers');
 assert(process.env.COS_ENDPOINT, 'Please define env var COS_ENDPOINT');
 assert(process.env.COS_API_KEY, 'Please define env var COS_API_KEY');
 assert(process.env.COS_IBM_AUTH_ENDPOINT, 'Please define env var COS_IBM_AUTH_ENDPOINT');
-assert(process.env.COS_SERVICE_INSTANCE_ID, 'Please define env var COS_SERVICE_INSTANCE_ID');
+assert(process.env.COS_RESOURCE_INSTANCE_ID, 'Please define env var COS_RESOURCE_INSTANCE_ID');
 assert(process.env.COS_BUCKET_NAME, 'Please define env var COS_BUCKET_NAME');
 
 const cos = new AWS.S3({
   endpoint: process.env.COS_ENDPOINT,
   apiKeyId: process.env.COS_API_KEY,
   ibmAuthEndpoint: process.env.COS_IBM_AUTH_ENDPOINT,
-  serviceInstanceId: process.env.COS_SERVICE_INSTANCE_ID,
+  serviceInstanceId: process.env.COS_RESOURCE_INSTANCE_ID,
 });
 
 /**
