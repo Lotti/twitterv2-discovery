@@ -55,7 +55,6 @@ const listenStream = async () => {
     stream.close();
     if (error.message.includes('This stream is currently at the maximum allowed connection limit')) {
       await sleep(delay);
-      await listenStream();
     }
   }
 };
