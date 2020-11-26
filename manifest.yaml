@@ -12,6 +12,7 @@ applications:
   env:
     NODE_ENV: 'production'
     NODE_MODULES_CACHE: 'true'
+    STORAGE_MODE: ((STORAGE_MODE))
     TWITTER_API_KEY: ((TWITTER_API_KEY))
     TWITTER_SECRET_KEY: ((TWITTER_SECRET_KEY))
     COS_ENDPOINT: ((COS_ENDPOINT))
