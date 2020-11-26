@@ -85,6 +85,8 @@ stages:
         script: |-
           #!/bin/bash
 
+          CF_REGION=$(echo ${CF_REGION} | cut -d':' -f 3)
+
           #PUT ENV VARS IN manifest-params.yaml
           > manifest-params.yaml
           OLD_IFS="${IFS}"
